@@ -78,3 +78,13 @@ module "acm" {
   zone_id     = module.route53.zone_id
 }
 
+
+terraform {
+  backend "s3" {
+    bucket         = "adnaan-terraform-state"
+    key            = "prod/terraform.tfstate"   # this is the path of where i am going to store the state file in the s3 bucket
+    region         = "eu-west-2"
+    dynamodb_table = "dynamodb-terraform-state-lock"   #create state locking inside dynamodb
+    encrypt        = true
+  }
+}
