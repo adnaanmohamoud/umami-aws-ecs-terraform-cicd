@@ -1,0 +1,66 @@
+name: Automatically builds and push new image when code is updated and then deployed to terraform infrastructure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-push-image-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout(copies) code repository into vm
+        uses: actions/checkout@v4
+
+      - name: Build docker image
+        run: docker build -t umami22 ./umami
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: eu-west-2
+
+      - name: Login to Amazon ECR 
+        run: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 427587740275.dkr.ecr.eu-west-2.amazonaws.com
+      
+      - name: Push image to ECR
+        run: |
+          docker tag umami22:latest 427587740275.dkr.ecr.eu-west-2.amazonaws.com/umami22:latest
+          docker push 427587740275.dkr.ecr.eu-west-2.amazonaws.com/umami22:latest
+
+      - name: Install terraform 
+        uses: hashicorp/setup-terraform@v3
+        with: 
+          terraform_version: "1.5.0"
+
+      - name: Terraform format- makes sure commands are executed properly
+        id: fmt
+        run: terraform fmt -check
+
+      - name: initialise terraform 
+        run: terraform init
+        working-directory: infra
+      
+      - name: validate the syntax
+        run: terraform validate
+        working-directory: infra
+
+      - name: terraform plan
+        run: terraform plan
+        working-directory: infra
+
+      - name: apply the changes to terraform
+        run: terraform apply -auto-approve
+        working-directory: infra
+
+
+
+
+
+
+        # what i dont understand is, everytime i make changes a new docker image called umami22 is made and is pushed to the same ecr, what happens to the old image called umami22:latest?
+        # besides i already have already written the umami22 image with its sha in the ec r module, what happens to that? 
+
