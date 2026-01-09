@@ -259,6 +259,23 @@ The pipeline performs the following on every push to `main`:
 https://adnaan-application.com
 
 
+<p align="center">
+  <img src="images/proof/home.png" alt="Home" width="900">
+</p>
+
+<p align="center">
+  <img src="images/proof/twitch.png" alt="GitHub Actions CI/CD Pipeline" width="900">
+</p>
+
+<p align="center">
+  <img src="images/proof/one.png" alt="GitHub Actions CI/CD Pipeline" width="900">
+</p>
+
+<p align="center">
+  <img src="images/proof/two.png" alt="GitHub Actions CI/CD Pipeline" width="900">
+</p>
+
+
 ## Challenges & Lessons Learned
 
 - Managing ACM certificate validation with Route 53 in Terraform
