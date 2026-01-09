@@ -23,8 +23,6 @@ output "public_subnet_b" {
   value = aws_subnet.public_subnet_b.id
 }
 
-# I need to ouput subnet's cidr because some modules like sg uses cidr instead of the subnet's id
-
 output "private_subnet_a_cidr" {
   description = "CIDR of private subnet a"
   value = aws_subnet.private_subnet_a.cidr_block

@@ -1,5 +1,3 @@
-# Create ALB resource
-
 resource "aws_lb" "alb" {
   name               = var.alb_name
   internal           = false
@@ -7,14 +5,12 @@ resource "aws_lb" "alb" {
   security_groups    = [var.alb_sg]
   subnets            = [var.public_subnet_a, var.public_subnet_b]
 
-  enable_deletion_protection = true    # alb cant be deleted until set to false- prevents accidentally deleting alb 
+  enable_deletion_protection = true   
 
   tags = {
     Name = var.alb_name
   }
 }
-
-# Create Target Group
 
 resource "aws_lb_target_group" "tg" {
   name        = "${var.alb_name}-tg"
@@ -34,8 +30,6 @@ resource "aws_lb_target_group" "tg" {
     unhealthy_threshold = 2
   }
 }
-
-# Create listener for ALB   =>>>> i find this part tecky with the certificate and ssl when listening to https
 
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.alb.arn

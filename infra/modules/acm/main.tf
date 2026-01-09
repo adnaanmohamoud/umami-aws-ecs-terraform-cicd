@@ -1,6 +1,4 @@
-# Create ACM Certificate
-
- resource "aws_acm_certificate" "cert" {
+resource "aws_acm_certificate" "cert" {
   domain_name       = var.domain_name
   validation_method = "DNS"
 
@@ -12,8 +10,6 @@
     create_before_destroy = true
   }
 }
-
-# ?
 
 resource "aws_route53_record" "validation" {
   for_each = {

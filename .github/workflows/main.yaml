@@ -56,11 +56,3 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: infra
 
-
-
-
-
-
-        # what i dont understand is, everytime i make changes a new docker image called umami22 is made and is pushed to the same ecr, what happens to the old image called umami22:latest?
-        # besides i already have already written the umami22 image with its sha in the ec r module, what happens to that? 
-

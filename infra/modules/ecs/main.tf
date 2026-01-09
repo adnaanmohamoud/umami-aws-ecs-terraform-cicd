@@ -1,5 +1,3 @@
-# Create ECS cluster
-
 resource "aws_ecs_cluster" "ecs-cluster" {
   name = "ecs-cluster"
 
@@ -8,9 +6,6 @@ resource "aws_ecs_cluster" "ecs-cluster" {
     value = "enabled"
   }
 }
-
-
-# Create Task Definition
 
 resource "aws_ecs_task_definition" "service" {
   family = "service"
@@ -37,8 +32,6 @@ resource "aws_ecs_task_definition" "service" {
         }
       ]
 
-
-      # I am going to change this to using secret manager, right now im just hardcoding to see if everything works
 
       environment = [
         {
@@ -67,8 +60,6 @@ resource "aws_ecs_task_definition" "service" {
   ])
 
 }
-
-# Create the Service to manage these tasks
 
 resource "aws_ecs_service" "umami" {
   name            = "umami-service"

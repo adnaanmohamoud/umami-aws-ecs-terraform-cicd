@@ -6,10 +6,6 @@ resource "aws_vpc" "my_vpc" {
   }
 }
 
-
-
-# Create Private Subnet A For ECS Tasks and RDS
-
 resource "aws_subnet" "private_subnet_a" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.1.0/24"
@@ -20,9 +16,6 @@ resource "aws_subnet" "private_subnet_a" {
   }
 }
 
-
-# Create Private Subnet B
-
 resource "aws_subnet" "private_subnet_b" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.2.0/24"
@@ -32,9 +25,6 @@ resource "aws_subnet" "private_subnet_b" {
     Name = var.priv_subnet_b_name
   }
 }
-
-
-# Create Public Subnet A For ALB AND NAT Gateway
 
 resource "aws_subnet" "public_subnet_a" {
   vpc_id     = aws_vpc.my_vpc.id
@@ -47,10 +37,6 @@ resource "aws_subnet" "public_subnet_a" {
   }
 }
 
-
-
-# Create A Public Subnet B For ALB
-
 resource "aws_subnet" "public_subnet_b" {
   vpc_id     = aws_vpc.my_vpc.id
   cidr_block = "10.0.4.0/24"
@@ -62,9 +48,6 @@ resource "aws_subnet" "public_subnet_b" {
   }
 }
 
-
-# Create An Internet Gateway
-
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.my_vpc.id
 
@@ -73,15 +56,11 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-
 # Create An Elastic IP For NAT GW
 
 resource "aws_eip" "nat" {
   domain   = var.domain
 }
-
-
-# Create A NAT Gateway
 
 resource "aws_nat_gateway" "NAT_gateway" {
   allocation_id = aws_eip.nat.id
@@ -94,15 +73,13 @@ resource "aws_nat_gateway" "NAT_gateway" {
   depends_on = [aws_internet_gateway.igw]
 }
 
-
-
-# Create a Private Route Table for Private Subnets- i am going to make this route table to be shared amongst the private subnets 
+# Create a Route Table for Private Subnets
 
 resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.my_vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"     # its basically saying, if traffic is destined to anywhere within the vpc send it there otherwise if the computer is on the internet, send traffic to the nat gw, in this case task can send traffic to db as its local (Within vpc)
+    cidr_block = "0.0.0.0/0"   
     nat_gateway_id = aws_nat_gateway.NAT_gateway.id
   }
 
@@ -127,31 +104,22 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
-
-# Associate Private Subnet A To privateRoutetable1
-
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.private_subnet_a.id
   route_table_id = aws_route_table.private_route_table.id
 }
 
 
-# Associate Private Subnet B To privateRoutetable1
-
 resource "aws_route_table_association" "b" {
   subnet_id      = aws_subnet.private_subnet_b.id
   route_table_id = aws_route_table.private_route_table.id
 }
-
-# Associate Public Subnet A To publicRouteTable
 
 resource "aws_route_table_association" "c" {
   subnet_id      = aws_subnet.public_subnet_a.id
   route_table_id = aws_route_table.public_route_table.id
 }
 
-
-# Associate Public Subnet B To Public Route Table
 
 resource "aws_route_table_association" "d" {
   subnet_id      = aws_subnet.public_subnet_b.id

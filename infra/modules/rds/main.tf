@@ -2,18 +2,18 @@
 
 resource "aws_db_instance" "rds" {
   
-  identifier = var.rds_instance_name    #this is the name of the rds instance (like a server that has many db)  
+  identifier = var.rds_instance_name  
   engine               = "postgres"
   engine_version       = "17.6"
 
   allocated_storage    = 20 
   instance_class       = "db.t3.micro"
 
-  db_name              = var.name_of_db     # this is the name of the first database made by terraform
+  db_name              = var.name_of_db     
   username             = local.db_creds.username
   password             = local.db_creds.password
 
-  skip_final_snapshot  = true   # a snapshot wont be taken of the db once deleted, saves money
+  skip_final_snapshot  = true 
 
   publicly_accessible = false
 
@@ -27,8 +27,6 @@ resource "aws_db_instance" "rds" {
     Name = var.rds_instance_name
   }
 }
-
-# Create a Subnet group (its just a collection of private subnets where ur aws can put ur db in)
 
 resource "aws_db_subnet_group" "rds" {
   name       = "rds"

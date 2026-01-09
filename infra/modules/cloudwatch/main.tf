@@ -1,12 +1,7 @@
-# There is nothing for fargate on the terraform documentation- all ec2
-
-# CloudWatch log group for ECS tasks
-
 resource "aws_cloudwatch_log_group" "ecs_tasks" {
   name              = var.ecs_log_group_name
   retention_in_days = 14
 }
-
 
 # ECS CPU utilization alarm
 

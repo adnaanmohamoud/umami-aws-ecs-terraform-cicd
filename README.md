@@ -6,7 +6,7 @@
 
 - Designed and deployed a **secure, highly available AWS architecture**
 - Implemented **Infrastructure as Code** with modular Terraform
-- Built **containerised CI/CD pipelines** using GitHub Actions + OIDC
+- Built **fully automated CI/CD pipelines** using GitHub Actions
 - Secured traffic with **HTTPS, ACM, Route 53, and private subnets**
 - Deployed a real, internet-facing application with zero manual AWS setup
 
@@ -90,6 +90,72 @@ The goal was to design, deploy, and automate a **cloud-native analytics platform
 └── README.md
 
 ```
+.
+├── .github/
+│   └── workflows/
+│       └── main.yaml
+│
+├── infra/
+│   ├── main.tf
+│   └── modules/
+│       ├── acm/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── alb/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── cloudwatch/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── ecs/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── iam/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── rds/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── route53/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── secret-manager/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       ├── sg/
+│       │   ├── main.tf
+│       │   ├── variables.tf
+│       │   └── outputs.tf
+│       │
+│       └── vpc/
+│           ├── main.tf
+│           ├── variables.tf
+│           └── outputs.tf
+│
+├── umami/
+│   ├── Dockerfile
+│   └── src/
+│
+├── .gitignore
+└── README.md
+
+
 
 ## Infrastructure
 
@@ -190,13 +256,32 @@ npm run start
 
 Visit here to access application locally:
 http://localhost:3000
+```
 
 ### Terraform Deployment
 
+```
 cd infra
 terraform init
 terraform plan
 terraform apply
+```
+
+## CI/CD Automation (GitHub Actions)
+
+This project uses a fully automated GitHub Actions pipeline to build, package, and deploy the application to AWS ECS using Terraform.
+
+<p align="center">
+  <img src="images/cicd/github-actions.png" alt="GitHub Actions CI/CD Pipeline" width="900">
+</p>
+
+The pipeline performs the following on every push to `main`:
+
+- Builds the Umami Docker image
+- Pushes the image to Amazon ECR
+- Runs Terraform (init, plan, apply)
+- Updates the ECS Fargate service behind the Application Load Balancer
+
 
 ## Live URL
 
@@ -207,3 +292,6 @@ https://adnaan-application.com
 
 - Managing ACM certificate validation with Route 53 in Terraform
 - Debugging ALB health check failures during initial deployment
+
+
+
