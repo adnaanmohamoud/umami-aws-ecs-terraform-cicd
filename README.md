@@ -64,35 +64,6 @@ The goal was to design, deploy, and automate a **cloud-native analytics platform
 .
 ├── .github/
 │   └── workflows/
-│       └── main.yaml          
-│
-├── infra/
-│   ├── main.tf
-│   ├── variables.tf
-│   ├── outputs.tf
-│   └── modules/
-│       ├── acm/
-│       ├── alb/
-│       ├── cloudwatch/
-│       ├── ecs/
-│       ├── iam/
-│       ├── rds/
-│       ├── route53/
-│       ├── secret-manager/
-│       ├── sg/
-│       └── vpc/
-│
-├── umami/
-│   ├── Dockerfile
-│   └── src/
-│
-├── .gitignore
-└── README.md
-
-```
-.
-├── .github/
-│   └── workflows/
 │       └── main.yaml
 │
 ├── infra/
@@ -155,7 +126,7 @@ The goal was to design, deploy, and automate a **cloud-native analytics platform
 ├── .gitignore
 └── README.md
 
-
+```
 
 ## Infrastructure
 
