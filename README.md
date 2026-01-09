@@ -43,7 +43,7 @@ The goal was to design, deploy, and automate a **cloud-native analytics platform
 ---
 
 
-### High-Level Architecture
+### Architecture
 
 - Client traffic is routed through a **public Application Load Balancer (ALB)** over HTTPS.
 - The ALB forwards requests to **ECS tasks running Umami** in **private subnets**.
