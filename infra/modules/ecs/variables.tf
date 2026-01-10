@@ -38,3 +38,7 @@ variable "private_subnet_a" {
 variable "private_subnet_b" {
   type = string
 }
+
+variable "master_password" {
+  type = string
+}

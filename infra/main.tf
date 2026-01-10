@@ -55,6 +55,8 @@ module "ecs" {
   log_group_name    = module.cloudwatch.ecs_log_group_name    #need to go through this
   log_stream_prefix = "ecs"       #need to go through this
 
+  master_password = module.secret.master_password
+
 }
 
 module "cloudwatch" {

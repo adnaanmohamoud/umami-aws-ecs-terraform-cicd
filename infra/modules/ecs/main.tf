@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "service" {
       environment = [
         {
           name = "DATABASE_URL"
-          value = "postgresql://dbadmin:Ronaldo123@umami-rds.c9eakmui0hkf.eu-west-2.rds.amazonaws.com:5432/mydb?sslmode=no-verify" #postgresql://admin:Ronaldo123@${var.db_host}:${var.db_port}/${var.db_name}
+          value = "postgresql://dbadmin:${urlencode(var.master_password)}@umami-rds.c9eakmui0hkf.eu-west-2.rds.amazonaws.com:5432/mydb?sslmode=no-verify"                  
         },
         {
           name = "HOSTNAME"
